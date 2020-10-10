@@ -20,6 +20,21 @@ switch ($url) {
         $ctr = new HomeController();
         $ctr->remove();
         break;
+    case 'add-cate':
+        $ctr = new HomeController();
+        $ctr->addForm();
+        break;
+    case 'edit-cate':
+        $ctr = new HomeController();
+        $ctr->editForm();
+        break;
+    case 'save-add-cate':
+        $ctr = new HomeController();
+        $ctr->saveAddCate();
+        break;
+    case 'save-edit-cate':
+        $ctr = new HomeController();
+        $ctr->saveEditCate();
     case 'san-pham':
         // hiển thị danh sách sản phẩm
         $ctr = new ProductController();

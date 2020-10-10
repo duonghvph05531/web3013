@@ -8,6 +8,9 @@ class HomeController extends BaseController{
         // hiển thị danh sách danh mục
         // 1. lấy dữ liệu danh mục bằng model
         $cates = Category::all();
+        $cates->load([
+            'products'
+        ]);
         // 2. render ra view kèm dữ liệu
         // categories/index.blade.php
         $this->render('categories.index', [
@@ -24,10 +27,40 @@ class HomeController extends BaseController{
         header('location: ' . BASE_URL);
     }
 
-
-    public function detail()
+    public function addForm()
     {
-        echo "Đây là trang chi tiết sản phẩm";
+        $this->render('categories.add-form');
+    }
+    public function editForm()
+    {
+        $cateid = isset($_GET['id']) ? $_GET['id'] : -1;
+        $model = Category::find($cateid);
+        if(!$model) {
+            header('location: ' . BASE_URL); die;
+        }
+        $this->render('categories.edit-form', compact('model'));
+    }
+
+    public function saveAddCate(){
+        $data = $_POST;
+        $cate = new Category();
+        $cate->fill($data);
+        
+        $cate->save();
+        header('location: ' . BASE_URL);
+        die;
+    }
+
+    public function saveEditCate(){
+        $id = $_POST['id'];
+        $cate = Category::find($id);
+        if($cate) {
+            $data = $_POST;
+            $data['show_menu'] = isset($data['show_menu']) ? $data['show_menu'] : 0;
+            $cate->fill($data);
+            $cate->save();
+        }
+        header('location: ' . BASE_URL); die;
     }
 }
 
